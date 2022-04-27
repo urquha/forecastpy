@@ -39,7 +39,7 @@ class Api:
     def get_assignments(self, start_date=None, end_date=None, state='active',
                         project_id=None, person_id=None, placeholder_id=None) -> List[Assignment]:
 
-        data = self._requestor.get(f"assignments?start_date={start_date}&end_date={end_date}", params=params)
+        data = self._requestor.get(f"assignments?start_date={start_date}&end_date={end_date}")
 
         return [Assignment.from_dict(assignment) for assignment in data['assignments']]
 
@@ -52,7 +52,7 @@ class Api:
         if project_id:
             url = f"milestones/{project_id}"
 
-        data = self._requestor.get(url, params=params)
+        data = self._requestor.get(url)
 
         return [Milestone.from_dict(milestone) for milestone in data['milestones']]
 
