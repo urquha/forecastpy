@@ -38,20 +38,8 @@ class Api:
 
     def get_assignments(self, start_date=None, end_date=None, state='active',
                         project_id=None, person_id=None, placeholder_id=None) -> List[Assignment]:
-        params = {'state': state}
 
-        if start_date:
-            params['start_date'] = start_date
-        if end_date:
-            params['end_date'] = end_date
-        if project_id:
-            params['project_id'] = project_id
-        if person_id:
-            params['person_id'] = person_id
-        if placeholder_id:
-            params['placeholder_id'] = placeholder_id
-
-        data = self._requestor.get("assignments", params=params)
+        data = self._requestor.get(f"assignments?start_date={start_date}&end_date={end_date}", params=params)
 
         return [Assignment.from_dict(assignment) for assignment in data['assignments']]
 
@@ -60,12 +48,11 @@ class Api:
         return Assignment.from_dict(data['assignment'])
 
     def get_milestones(self, project_id: int = None) -> List[Milestone]:
-        params = {}
-
+        url = "milestones"
         if project_id:
-            params['project_id'] = project_id
+            url = f"milestones/{project_id}"
 
-        data = self._requestor.get("milestones", params=params)
+        data = self._requestor.get(url, params=params)
 
         return [Milestone.from_dict(milestone) for milestone in data['milestones']]
 

@@ -22,7 +22,7 @@ class Requestor:
         }
 
 
-    def get(self, endpoint: str, params: Optional[Dict] = None) -> Dict:
+    def get(self, endpoint: str) -> Dict:
         start = timer()
         r = requests.get("{}/{}".format(self._base_url, endpoint), headers=self._headers)
         end = timer()
