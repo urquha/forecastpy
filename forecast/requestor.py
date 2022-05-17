@@ -4,14 +4,16 @@ from timeit import default_timer as timer
 import requests
 import requests_cache
 
-requests_cache.install_cache(cache_name='forecast_cache', backend='sqlite', expire_after=180)
 
 
 class Requestor:
 
-    def __init__(self, account_id, auth_token, base_url=None):
+    def __init__(self, account_id, auth_token, cache, base_url=None):
         self._account_id = account_id
         self._auth_token = auth_token
+        self.cache = cache
+        if cache:
+            requests_cache.install_cache(cache_name='forecast_cache', backend='sqlite', expire_after=180)
         if base_url is None:
             self._base_url = "https://api.forecastapp.com"
 
@@ -30,5 +32,6 @@ class Requestor:
         return r.json()
 
     @staticmethod
-    def clear_cache():
-        requests_cache.clear()
+    def clear_cache(self):
+        if self.cache:
+            requests_cache.clear()
