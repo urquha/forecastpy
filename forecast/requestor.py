@@ -13,6 +13,7 @@ class Requestor:
         self._auth_token = auth_token
         self.cache = cache
         if cache:
+            print("Adding cache")
             requests_cache.install_cache(cache_name='forecast_cache', backend='sqlite', expire_after=180)
         if base_url is None:
             self._base_url = "https://api.forecastapp.com"
@@ -28,7 +29,10 @@ class Requestor:
         start = timer()
         r = requests.get("{}/{}".format(self._base_url, endpoint), headers=self._headers)
         end = timer()
-        print("Enpoint: {0} | Time: {1} | Cache: {2}".format(endpoint, end - start, r.from_cache, ))
+        if self.cache:
+            print("Enpoint: {0} | Time: {1} | Cache: {2}".format(endpoint, end - start, r.from_cache, ))
+        else:
+            print("Enpoint: {0} | Time: {1} ".format(endpoint, end - start ))
         return r.json()
 
     @staticmethod
