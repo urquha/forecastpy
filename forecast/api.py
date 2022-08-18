@@ -40,9 +40,12 @@ class Api:
                         project_id=None, person_id=None, placeholder_id=None) -> List[Assignment]:
 
         data = self._requestor.get(f"assignments?start_date={start_date}&end_date={end_date}")
-
-        return [Assignment.from_dict(assignment) for assignment in data['assignments']]
-
+        try:
+            return [Assignment.from_dict(assignment) for assignment in data['assignments']]
+        except Exception as e:
+            print(data)
+            raise(Exception(e))
+            
     def get_assignment(self, assignment_id: int) -> Assignment:
         data = self._requestor.get("assignments/{}".format(assignment_id))
         return Assignment.from_dict(data['assignment'])
