@@ -39,7 +39,7 @@ class Api:
     def get_assignments(self, start_date=None, end_date=None, state='active',
                         project_id=None, person_id=None, placeholder_id=None) -> List[Assignment]:
 
-        data = self._requestor.get(f"assignments?start_date={start_date}&end_date={end_date}")
+        data = self._requestor.get(f"assignments?start_date={start_date}&end_date={end_date}&state={state}")
         try:
             return [Assignment.from_dict(assignment) for assignment in data['assignments']]
         except Exception as e:
